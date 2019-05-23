@@ -3,7 +3,6 @@ package org.hero.threadpool.main;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 class MyCache{
@@ -15,7 +14,7 @@ class MyCache{
         System.out.println("线程"+Thread.currentThread().getName()+"正在写入key="+key);
         rwlock.writeLock().lock();
         try {
-            TimeUnit.MILLISECONDS.sleep(300);  //写入是原子性的，所以睡眠下，等待 结果
+            TimeUnit.MILLISECONDS.sleep(500);  //写入是原子性的，所以睡眠下，等待 结果
             map.put(key,value);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -32,7 +31,7 @@ class MyCache{
             TimeUnit.MILLISECONDS.sleep(300);  //写入是原子性的，所以睡眠下，等待 结果
             Object object= map.get(key);
             System.out.println("线程"+Thread.currentThread().getName()+"读取完成key="+object);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }finally{
             rwlock.readLock().unlock();
@@ -62,3 +61,24 @@ public class ReadAndWriteLockDemo {
 
     }
 }
+//不加锁的结果
+//        线程0正在写入key=0
+//        线程1正在写入key=1
+//        线程2正在写入key=2
+//        线程3正在写入key=3
+//        线程4正在写入key=4
+//        线程2正在读取
+//        线程3正在读取
+//        线程0正在读取
+//        线程1正在读取
+//        线程4正在读取
+//        线程2读取完成key=null
+//        线程4读取完成key=null
+//        线程3读取完成key=null
+//        线程0读取完成key=null
+//        线程1读取完成key=null
+//        线程4完成写入key=4
+//        线程3完成写入key=3
+//        线程0完成写入key=0
+//        线程2完成写入key=2
+//        线程1完成写入key=1
