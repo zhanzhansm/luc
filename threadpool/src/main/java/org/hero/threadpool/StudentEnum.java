@@ -1,4 +1,4 @@
-package org.hero.threadpool.main;
+package org.hero.threadpool;
 
 
 /**

@@ -1,4 +1,4 @@
-package org.hero.threadpool.main;
+package org.hero.threadpool;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
